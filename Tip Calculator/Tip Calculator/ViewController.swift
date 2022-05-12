@@ -115,20 +115,21 @@ class ViewController: UIViewController {
             scrollView.frameLayoutGuide.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.frameLayoutGuide.widthAnchor.constraint(equalTo: view.widthAnchor),
             scrollView.frameLayoutGuide.heightAnchor.constraint(equalTo: view.heightAnchor),
-            stack.heightAnchor.constraint(equalTo: scrollView.frameLayoutGuide.heightAnchor, multiplier: 1.0),
-            stack.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 0),
-            stack.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor, constant: 0),
-            stack.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 30),
-            stack.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -30),
-//            stack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            stack.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-            
-//            scrollView.contentLayoutGuide.topAnchor.constraint(equalTo: stack.topAnchor),
-//            scrollView.contentLayoutGuide.bottomAnchor.constraint(equalTo: stack.bottomAnchor),
-//            scrollView.contentLayoutGuide.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
-//            scrollView.contentLayoutGuide.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
+            stack.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, multiplier: 1.0),
+            stack.heightAnchor.constraint(equalTo: scrollView.frameLayoutGuide.heightAnchor, multiplier: 0.7),
+            scrollView.contentLayoutGuide.topAnchor.constraint(equalTo: stack.topAnchor),
+            scrollView.contentLayoutGuide.bottomAnchor.constraint(equalTo: stack.bottomAnchor),
+            scrollView.contentLayoutGuide.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
+            scrollView.contentLayoutGuide.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
         ])
-        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+      super.viewDidAppear(animated)
+      // just in case imageView's contenSize is smaller than scrollView's size, use 0 instead.
+        let offsetX = (stack.bounds.width-scrollView.bounds.width)/2
+        let offsetY = (stack.bounds.height-scrollView.bounds.height)/2
+        scrollView.contentOffset = CGPoint(x: offsetX, y: offsetY)
     }
     
     func registerForKeyboardNotification() {
@@ -147,13 +148,17 @@ class ViewController: UIViewController {
         scrollView.contentInset = contentInsets
         scrollView.scrollIndicatorInsets = contentInsets
         
-        print(contentInsets)
+        let offsetX = (stack.bounds.width-scrollView.bounds.width)/2
+        scrollView.contentOffset = CGPoint(x: offsetX, y: 0.0)
     }
 
     @objc func keyboardWillBeHidden(_ notification: NSNotification) {
         let contentInsets = UIEdgeInsets.zero
         scrollView.contentInset = contentInsets
         scrollView.scrollIndicatorInsets = contentInsets
+        let offsetX = (stack.bounds.width-scrollView.bounds.width)/2
+        let offsetY = (stack.bounds.height-scrollView.bounds.height)/2
+        scrollView.contentOffset = CGPoint(x: offsetX, y: offsetY)
     }
     
     @objc func textFieldContentChanged(_ sender: UITextField) {
